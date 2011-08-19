@@ -1,0 +1,207 @@
+<application xmlns="http://wadl.dev.java.net/2009/02"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:apigee="http://api.apigee.com/wadl/2010/07/"
+             xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://apigee.com/schemas/wadl-schema.xsd http://api.apigee.com/wadl/2010/07/ http://apigee.com/schemas/apigee-wadl-extensions.xsd">
+
+    <resources base="http://api.example.com/">
+
+        <resource path="foo.{format}">
+            <param name="format" type="xsd:string" style="template" required="true" default="json">
+                <doc>
+                    This kind of parameter usually represents the format that the API should respond with,
+                    like XML, JSON, etc. It makes sense to allow only the values that the API understands.
+                    (Although, currently, template parameters are not exposed in the console at all)
+                </doc>
+                <option value="json"/>
+                <option value="xml"/>
+                <option value="rss"/>
+            </param>
+
+            <method id="getFoo" name="GET" apigee:displayName="foo (GET)">
+                <apigee:tags>
+                    <apigee:tag primary="true">Foo</apigee:tag>
+                </apigee:tags>
+
+                <apigee:authentication required="false"/>
+
+                <apigee:example url="foo.{format}"/> <!-- ideally, this would be filled in with the default value (see above) -->
+
+                <doc title="foo" apigee:url="">
+                    This is just an example method.
+                </doc>
+
+                <request>
+                    <!-- These are the parameters that are exposed in the Parameters dialog -->
+
+                    <param name="required_with_default_freeform" type="xsd:string" style="query" required="true" default="Default">
+                        <doc>
+                            A required parameter with a specified default value ("Default"), but can be changed by the user
+                            to something else (a string, as specified) without restriction.
+                        </doc>
+                    </param>
+
+                    <param name="required_with_default_options" style="query" required="true" default="one">
+                        <doc>
+                            A required parameter with a specified default value ("one") from the set of
+                            allowed values defined by the option tags below. The console needs to enforce that
+                            the values are only those defined by the options (eg. using a dropdown box,
+                            rather than a textbox).
+                        </doc>
+                        <option value="one"/>
+                        <option value="two"/>
+                        <option value="three"/>
+                    </param>
+
+                    <param name="not_required_no_default" type="xsd:string" style="query" required="false">
+                        <doc>
+                            This parameter is not required for a method call and doesn't have a default value.
+
+                            Since it has no default value, the value box for it should be blank, as it is in
+                            Firefox. However, in Google Chrome and Safari, the box is pre-filled with the
+                            value "Value", and that value is sent as part of the request, even if the user
+                            never opens the Parameters dialog.
+
+                            If a parameter has not been changed, and isn't required, it shouldn't be
+                            sent as part of the request, because even a parameter with an empty value has meaning.
+                        </doc>
+                    </param>
+
+                    <param name="integer_parameter" type="xsd:integer" style="query" required="false" default="123">
+                        <doc>
+                            Parameters can be restricted to a set of values using their type. This parameter
+                            can only be an integer, and the console needs to enforce that.
+                        </doc>
+                    </param>
+
+                    <param name="fixed" type="xsd:string" style="query" required="true" fixed="Immutable value">
+                        <doc>
+                            This parameter is required, and has a fixed (and therefore, default) value.
+                            The console should enforce that this parameter cannot be removed or changed,
+                            but it is currently ignored.
+                        </doc>
+                    </param>
+                </request>
+
+                <response>
+                    <!-- This is just here for the sake of completeness, specifying the possible
+                    response formats that the API can give us. In the future, this can be exposed in
+                    the console somehow (perhaps linking it to a template/query parameter and adding
+                    a "switch format" button) -->
+                    <representation mediaType="application/atom+xml"/>
+                    <representation mediaType="application/rss+xml"/>
+                    <representation mediaType="application/json"/>
+                    <representation mediaType="text/html"/>
+                </response>
+            </method>
+
+            <method id="postFoo" name="POST" apigee:displayName="foo (POST)">
+                <apigee:tags>
+                    <apigee:tag primary="true">Foo</apigee:tag>
+                </apigee:tags>
+
+                <apigee:authentication required="false"/>
+
+                <apigee:example url="foo.{format}"/>
+
+                <doc title="foo" apigee:url="">
+                    This is just an example method.
+                </doc>
+            </method>
+        </resource>
+
+        <resource path="bar.{format}">
+            <param name="format" type="xsd:string" style="template" required="true" default="json">
+                <doc>
+                    This kind of parameter usually represents the format that the API should respond with,
+                    like XML, JSON, etc. It makes sense to allow only the values that the API understands.
+                    (Although, currently, template parameters are not exposed in the console at all)
+                </doc>
+                <option value="json"/>
+                <option value="xml"/>
+                <option value="rss"/>
+            </param>
+
+            <method id="bar" name="GET" apigee:displayName="bar (GET)">
+                <apigee:tags>
+                    <apigee:tag primary="true">Bar</apigee:tag>
+                    <apigee:tag>Hello</apigee:tag>
+                    <apigee:tag>World</apigee:tag>
+                </apigee:tags>
+
+                <apigee:authentication required="false"/>
+
+                <apigee:example url="bar.{format}"/> <!-- ideally, this would be filled in with the default value (see above) -->
+
+                <doc title="foo" apigee:url="">
+                    This is just an example method.
+                </doc>
+
+                <request>
+                    <!-- These are the parameters that are exposed in the Parameters dialog -->
+
+                    <param name="required_with_default_freeform" type="xsd:string" style="query" required="true" default="Default">
+                        <doc>
+                            A required parameter with a specified default value ("Default"), but can be changed by the user
+                            to something else (a string, as specified) without restriction.
+                        </doc>
+                    </param>
+
+                    <param name="required_with_default_options" style="query" required="true" default="one">
+                        <doc>
+                            A required parameter with a specified default value ("one") from the set of
+                            allowed values defined by the option tags below. The console needs to enforce that
+                            the values are only those defined by the options (eg. using a dropdown box,
+                            rather than a textbox).
+                        </doc>
+                        <option value="one"/>
+                        <option value="two"/>
+                        <option value="three"/>
+                    </param>
+
+                    <param name="not_required_no_default" type="xsd:string" style="query" required="false">
+                        <doc>
+                            This parameter is not required for a method call and doesn't have a default value.
+
+                            Since it has no default value, the value box for it should be blank, as it is in
+                            Firefox. However, in Google Chrome and Safari, the box is pre-filled with the
+                            value "Value", and that value is sent as part of the request, even if the user
+                            never opens the Parameters dialog.
+
+                            If a parameter has not been changed, and isn't required, it shouldn't be
+                            sent as part of the request, because even a parameter with an empty value has meaning.
+                        </doc>
+                    </param>
+
+                    <param name="integer_parameter" type="xsd:integer" style="query" required="false" default="123">
+                        <doc>
+                            Parameters can be restricted to a set of values using their type. This parameter
+                            can only be an integer, and the console needs to enforce that.
+                        </doc>
+                    </param>
+
+                    <param name="fixed" type="xsd:string" style="query" required="true" fixed="Immutable value">
+                        <doc>
+                            This parameter is required, and has a fixed (and therefore, default) value.
+                            The console should enforce that this parameter cannot be removed or changed,
+                            but it is currently ignored.
+                        </doc>
+                    </param>
+                </request>
+
+                <response>
+                    <!-- This is just here for the sake of completeness, specifying the possible
+                    response formats that the API can give us. In the future, this can be exposed in
+                    the console somehow (perhaps linking it to a template/query parameter and adding
+                    a "switch format" button) -->
+                    <representation mediaType="application/atom+xml"/>
+                    <representation mediaType="application/rss+xml"/>
+                    <representation mediaType="application/json"/>
+                    <representation mediaType="text/html"/>
+                </response>
+            </method>
+
+        </resource>
+    </resources>
+
+</application>
