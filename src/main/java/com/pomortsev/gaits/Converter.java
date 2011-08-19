@@ -119,7 +119,7 @@ public class Converter {
 
         api.setPath(wadlResource.getPath());
 
-        // add a description from the first <doc> tag, if it exists
+        // add a description from <doc> tags
         api.setDescription(WadlUtils.getDocValue(wadlResource.getDocArray()));
 
         // loop over methods and create operations
@@ -151,7 +151,7 @@ public class Converter {
         if (authenticationType.isSetRequired())
             operation.setOpen(!Boolean.valueOf(authenticationType.getRequired()));
 
-        // add a summary from the first <doc> tag, if it exists
+        // add a summary from <doc> tags
         operation.setSummary(WadlUtils.getDocValue(wadlMethod.getDocArray()));
 
         // add tags
@@ -203,7 +203,7 @@ public class Converter {
         parameter.setRequired(wadlParam.isSetFixed() ||
                 (wadlParam.isSetDefault() && wadlParam.getRequired()));
 
-        // add a description from the first <doc> tag, if it exists
+        // add a description from <doc> tags
         parameter.setDescription(WadlUtils.getDocValue(wadlParam.getDocArray()));
 
         // set the parameter type
@@ -220,10 +220,15 @@ public class Converter {
 
         parameter.setParamType(paramType);
 
-        // set the dataType
+        // set the dataType. this only works for a small subset of the xsd: types
+        // TODO: custom/complex datatypes -> models
         parameter.setDataType(wadlParam.getType().getLocalPart());
 
         // set the default value
+        /* note: the current version of the Swagger UI doesn't support (show) arbitrary
+         * default values (those not in the allowableValues list)
+         */
+
         if (wadlParam.isSetFixed()) {
             parameter.setDefaultValue(wadlParam.getFixed());
         } else if (wadlParam.isSetDefault()) {
@@ -231,7 +236,6 @@ public class Converter {
         }
 
         // set the allowable values
-        // TODO: <option>s
 
         // if we have a fixed value, it's the only allowable one
         if (wadlParam.isSetFixed()) {
@@ -247,8 +251,6 @@ public class Converter {
 
             parameter.setAllowableValues(allowableValues.toArray(new String[allowableValues.size()]));
         }
-
-        // the ui doesn't support arbitrary default values (those not in allowableValues)
 
         return parameter;
     }
@@ -274,6 +276,5 @@ public class Converter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
