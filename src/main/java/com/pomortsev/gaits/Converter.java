@@ -200,8 +200,7 @@ public class Converter {
 
         parameter.setName(wadlParam.getName());
 
-        parameter.setRequired(wadlParam.isSetFixed() ||
-                (wadlParam.isSetDefault() && wadlParam.getRequired()));
+        parameter.setRequired(wadlParam.isSetFixed() || wadlParam.getRequired());
 
         // add a description from <doc> tags
         parameter.setDescription(WadlUtils.getDocValue(wadlParam.getDocArray()));
