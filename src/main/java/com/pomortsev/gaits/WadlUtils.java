@@ -27,6 +27,6 @@ public class WadlUtils {
      * @return the slug
      */
     public static String getOperationSlug(ResourcesDocument.Resources wadlResources) {
-        return wadlResources.getBase().replaceAll("[^a-zA-Z0-9.-]+", "_");
+        return wadlResources.getBase().replaceAll("[^a-zA-Z0-9-]+", "_");
     }
 }
