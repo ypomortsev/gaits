@@ -74,7 +74,7 @@ public class Converter {
 
         for (ResourcesDocument.Resources wadlResources : app.getResourcesArray()) {
             Api api = new Api();
-            api.setPath(String.format("/%s.{format}", WadlUtils.getOperationSlug(wadlResources)));
+            api.setPath(String.format("/%s.json", WadlUtils.getOperationSlug(wadlResources)));
             api.setDescription(wadlResources.getBase());
             apis.add(api);
         }
